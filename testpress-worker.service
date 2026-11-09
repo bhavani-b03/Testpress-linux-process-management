@@ -1,0 +1,26 @@
+[Unit]
+Description=Testpress Background Worker Service
+After=network.target
+StartLimitIntervalSec=30s
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=testpress
+Group=testpress
+WorkingDirectory=/opt/testpress-worker
+EnvironmentFile=/opt/testpress-worker/testpress-worker.env
+ExecStart=/usr/bin/python3 /opt/testpress-worker/heartbeat.py
+
+# Resource Controls
+MemoryAccounting=true
+MemoryMax=50M
+MemoryHigh=40M
+MemorySwapMax=0
+
+# Automatic Restarts
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
